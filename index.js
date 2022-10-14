@@ -25,21 +25,22 @@ client.on("ready", () => {
   console.log(`Channels: ${client.channels.cache.size}`);
 
   console.log("Commands loaded:");
-  console.log(" ------------------")
+  console.log(" ------------------");
   for (const command in commands) {
     console.log(` - ${command}`);
   }
-  console.log(" ------------------")
+  console.log(" ------------------");
 });
 
 client.on("messageCreate", (message) => {
-    if (message.author.bot) return;
-    if (message.content.startsWith(process.env.PREFIX)) {
-        var command = imputbuilder.commandbuilder(message.content);
-        if (command.command in commands) {
-        commands[command.command].execute(message, command.arguments, client);
-        }
+  if (message.author.bot) return;
+  if (message.content.startsWith(process.env.PREFIX)) {
+    var command = imputbuilder.commandbuilder(message.content);
+    if (command.command in commands) {
+      commands[command.command].execute(message, command.arguments, client);
     }
+  }
 });
+
 
 client.login(process.env.TOKEN);
