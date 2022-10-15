@@ -1,4 +1,3 @@
-
 function commandloader(){
     var fs = require('fs');
     var commands = {};
@@ -8,6 +7,6 @@ function commandloader(){
         commands[command.name] = command;
     }
     return commands;
-}
+}   
 
 exports.commandloader = commandloader;

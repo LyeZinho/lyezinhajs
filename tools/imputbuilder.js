@@ -5,7 +5,7 @@ function tokenizer(imput){
 }
 
 function commandbuilder(imput){
-    var raw = imput.slice(1);
+    var raw = imput.toLowerCase().slice(1);
     var tokens = tokenizer(raw);
     var command = {
         "command": tokens[0],
