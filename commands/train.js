@@ -20,8 +20,8 @@ module.exports = {
         let tag = "";
         let response = "";
 
-        embed.setTitle("Type the rs");
-        embed.setFooter("Type cancel to cancel the train! (1/3)");
+        embed.setTitle("Type the response");
+        embed.setFooter("Type the response for i can learn.");
         embed.setColor("#FF0000");
 
         /*
@@ -30,62 +30,24 @@ module.exports = {
         then use the information for l.learn(tag, sentence, response)
         */
 
-        message.channel.send({ embeds: [embed] }).then(async function (msg) {
-            const filter = m => m.author.id === message.author.id;
-            const collector = msg.channel.createMessageCollector(filter, { time: 60 * 1000
-            });
-
-            collector.on('collect', async msg => {
-                if (msg.content.toLowerCase() === "cancel") {
-                    collector.stop();
-                    embed.setTitle("Training cancelled");
-                    embed.setFooter("Training cancelled :(");
-                    msg.channel.send({ embeds: [embed] });
-                }
-            });
-
-            collector.on('end', collected => {
-                if (collected.size > 0 || collected.content != "cancel") {
+        message.channel.send({ embeds: [embed] }).then(() => {
+            message.channel.awaitMessages(m => m.author.id === message.author.
+                id, {
+                    max: 1,
+                    errors: ["time"],
+                    time: 30000
+                }).then(collected => {
                     response = collected.first().content;
-                    embed.setTitle("Type the tag");
-                    embed.setFooter("Type cancel to cancel the train! (1/2)");
+                    // Get a random number of characters from the collected content
+                    tag = response.substring(Math.floor(Math.random() * response.length), Math.floor(Math.random() * response.length) + 1);
+                    l.learn(tag, sentence, response);
+                    embed.setTitle("I've learned something new!");
+                    embed.setFooter("Thanks for teaching me!");
                     embed.setColor("#FF0000");
-                    tag = collected.first().content;
-                    msg.channel.send({ embeds: [embed] })
-                        .then(async function (msg) {
-                            const filter = m => m.author.id === message.author.id;
-                            const collector = msg.channel.createMessageCollector(filter, { time: 60 * 1000
-                            });
-
-                            collector.on('collect', async msg => {
-                                if (msg.content.toLowerCase() === "cancel") {
-                                    collector.stop();
-                                    embed.setTitle("Training cancelled");
-                                    embed.setFooter("Training cancelled :(");
-                                    msg.channel.send({ embeds: [embed] });
-                                }
-                            });
-
-                            collector.on('end', collected => {
-                                if (collected.size > 0 || collected.content!= "cancel") {
-                                    embed.setTitle("Type the ");
-                                    embed.setFooter("Type cancel to cancel the train! (3/3)");
-                                    embed.setColor("#FF0000");
-                                    response = collected.first().content;
-                                    msg.channel.send({ embeds: [embed] }).then(
-                                        async function (msg) {
-                                            embed.setTitle("Training Completed");
-                                            embed.setFooter("Training Completed :)");
-                                            embed.setColor("#FF0000");
-                                            msg.channel.send({ embeds: [embed] })
-                                        }
-                                    );
-                                    l.learn(tag, sentence, response);
-                                }
-                            });
-                        })
-                }
-            });
+                    message.channel.send({ embeds: [embed] })
+                }).catch(() => {
+                    message.channel.send("You didn't answer in time!");
+                });
         });
     }
 };
