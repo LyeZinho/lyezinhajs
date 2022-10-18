@@ -1,6 +1,7 @@
 module.exports = {
   name: "dice",
   description: "Rolls a dice!",
+  help: "~dice",
   execute: function (message, args, client) {
     const { EmbedBuilder } = require("discord.js");
     const embed = new EmbedBuilder();
