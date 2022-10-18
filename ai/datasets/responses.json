@@ -1,1 +1,1 @@
-[{"tag":"greetings","response":["Hi","Hello","Hello","Hello there"]},{"tag":"questiongreeting","response":["Hi im fine","Im fine"]},{"tag":"farwell","response":["Bye","Good bye","Goodbye","Goodbye"]}]
+[{"tag":"greetings","response":["Hi","Hello","Hello","Hello there"]},{"tag":"questiongreeting","response":["Im fine!","Im fine and you?"]},{"tag":"farwell","response":["Bye","Good bye","Goodbye","Goodbye"]}]

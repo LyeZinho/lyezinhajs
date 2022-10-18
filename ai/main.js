@@ -21,19 +21,23 @@ let net = new brain.NeuralNetwork({
 });
 
 //Train the neural network
-net.train(train, {
-        errorThresh: 0.005,
-        iterations: 20000,
-        log: false,
-        logPeriod: 10,
-        learningRate: 0.3
-});
+// net.train(train, {
+//         errorThresh: 0.005,
+//         iterations: 20000,
+//         log: false,
+//         logPeriod: 10,
+//         learningRate: 0.3
+// });
+
+// Load the model using fs
+net.fromJSON(JSON.parse(fs.readFileSync(path.join(__dirname, './datasets/model.json'), 'utf8')));
 
 
 async function chat(input){
     let word = utils.creatBoW(input, dictionary);
     let output = net.run(word);
-    return mine.getResponse(utils.outputFilter(output));
+    let response = mine.getResponse(utils.outputFilter(output));
+    return response;
 }
 
 console.log(chat("How are you?"))
