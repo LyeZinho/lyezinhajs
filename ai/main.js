@@ -30,7 +30,7 @@ net.train(train, {
 });
 
 
-function chat(input){
+async function chat(input){
     let word = utils.creatBoW(input, dictionary);
     let output = net.run(word);
     return mine.getResponse(utils.outputFilter(output));

@@ -14,8 +14,8 @@ module.exports = {
             rawText += " " + args[i];
         }
         
-        let response = ai.chat(rawText);
-        
-        message.channel.send(response);
+        ai.chat(rawText).then(function(response){
+            message.channel.send(response);
+        });
     }
 };
