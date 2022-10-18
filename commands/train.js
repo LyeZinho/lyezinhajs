@@ -10,44 +10,39 @@ module.exports = {
         const { EmbedBuilder } = require("discord.js");
         const embed = new EmbedBuilder()
 
-        let raw = "";
-
-        for (let i = 0; i < args.length; i++) {
-            raw += args[i] + " ";
-        }
-
-        let sentence = raw;
-        let tag = "";
+        let raWsentence = "";
+        let raWtag = "";
         let response = "";
 
-        embed.setTitle("Type the response");
-        embed.setFooter("Type the response for i can learn.");
-        embed.setColor("#FF0000");
+        embed.setTitle("Training")
+        embed.setColor(0x00ff00)
+        embed.setDescription(`What is the response for this sencence?`)
+        // embed.addFields(
+        //     { name: "Sentence: ", value: tag, inline: true },
+        //     { name: "Tag: ", value: tag, inline: true }
+        // )
 
-        /*
-        Ask user for the response then ask user for the tag
+        message.channel.send({ embeds: [embed] }).then((msg) => {
+        //Send the embed and wait for the message repy from the user
+        //Then use for train
+        const filter = m => m.author.id === message.author.id;
+        const collector = msg.channel.createMessageCollector(filter, { time: 60000 });
 
-        then use the information for l.learn(tag, sentence, response)
-        */
-
-        message.channel.send({ embeds: [embed] }).then(() => {
-            message.channel.awaitMessages(m => m.author.id === message.author.
-                id, {
-                    max: 1,
-                    errors: ["time"],
-                    time: 30000
-                }).then(collected => {
-                    response = collected.first().content;
-                    // Get a random number of characters from the collected content
-                    tag = response.substring(Math.floor(Math.random() * response.length), Math.floor(Math.random() * response.length) + 1);
-                    l.learn(tag, sentence, response);
-                    embed.setTitle("I've learned something new!");
-                    embed.setFooter("Thanks for teaching me!");
-                    embed.setColor("#FF0000");
-                    message.channel.send({ embeds: [embed] })
-                }).catch(() => {
-                    message.channel.send("You didn't answer in time!");
-                });
+        collector.on('collect', async msg => {
+            response = await msg.content;
+            msg.delete();
+            collector.stop();
         });
+
+        collector.on('end', async () => {
+                embed.setTitle("Tank you!")
+                embed.setColor(0x00ff00)
+                embed.setDescription(`I have learned something new!`)
+                message.channel.send({ embeds: [embed] })
+                l.learn(sentence, tag, response);
+            });
+        });
+
+        
     }
 };
