@@ -1,6 +1,7 @@
 module.exports = {
   name: "pat",
   description: "Pats a user!",
+  help: "~pat <user>",
   execute: function (message, args, client) {
     const { EmbedBuilder } = require("discord.js");
     const embed = new EmbedBuilder();

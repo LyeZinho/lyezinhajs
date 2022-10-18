@@ -6,8 +6,11 @@ module.exports = {
         const { EmbedBuilder } = require("discord.js");
         const embed = new EmbedBuilder();
         
-        embed.setTitle("Commands");
-        embed.setDescription("Here are all the commands!");
+        embed.setTitle("Here are all the commands!");
+        embed.setURL('https://discord.js.org/')
+        embed.setImage('https://lyezinha.vercel.app/content/otama-art.png')
         embed.setColor("#FF0000");
+
+        message.channel.send({ embeds: [embed] });
     }
 }

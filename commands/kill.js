@@ -1,6 +1,7 @@
 module.exports = {
     name: "kill",
     description: "Kills a user!",
+    help: "~kill <user>",
     execute: function (message, args, client) {
       const { EmbedBuilder } = require("discord.js");
       const embed = new EmbedBuilder();
