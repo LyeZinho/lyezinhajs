@@ -1,3 +1,15 @@
+function creatTag(argsArray){
+    var tag = argsArray.join(" ");
+    tag = tag.replace(/[^a-zA-Z0-9]/g, "");
+    return tag;
+}
+
+function createSentence(argsArray){
+    var sentence = argsArray.join(" ");
+    return sentence;
+}
+
+console.log(createSentence(["Hello,", "world!"]));
 
 
 
@@ -9,10 +21,11 @@ module.exports = {
         const l = require('../ai/learn');
         const { EmbedBuilder } = require("discord.js");
         const embed = new EmbedBuilder()
-
-        let raWsentence = "";
-        let raWtag = "";
-        let response = "";
+        
+        
+        // let raWsentence = 
+        // let raWtag = 
+        // let response = "";
 
         embed.setTitle("Training")
         embed.setColor(0x00ff00)
