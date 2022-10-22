@@ -1,17 +1,18 @@
 function creatTag(argsArray){
-    var tag = argsArray.join(" ");
+    let tag = argsArray.join(" ");
     tag = tag.replace(/[^a-zA-Z0-9]/g, "");
+    let random = Math.floor(Math.random() * tag.length);
+    tag = tag.substring(0, random);
     return tag;
 }
+const l = require('../ai/learn');~
+l.learn("test", "test", "test");
+
 
 function createSentence(argsArray){
-    var sentence = argsArray.join(" ");
+    let sentence = argsArray.join(" ");
     return sentence;
 }
-
-console.log(createSentence(["Hello,", "world!"]));
-
-
 
 module.exports = {
     name: 'train',
@@ -23,39 +24,14 @@ module.exports = {
         const embed = new EmbedBuilder()
         
         
-        // let raWsentence = 
-        // let raWtag = 
-        // let response = "";
+        let raWsentence = createSentence(args);
+        let raWtag = creatTag(args);
+        let response = "";
 
-        embed.setTitle("Training")
-        embed.setColor(0x00ff00)
-        embed.setDescription(`What is the response for this sencence?`)
-        // embed.addFields(
-        //     { name: "Sentence: ", value: tag, inline: true },
-        //     { name: "Tag: ", value: tag, inline: true }
-        // )
+        if(raWsentence == ""){
+            message.channel.send("You need to give me something to learn!");
+        }
 
-        message.channel.send({ embeds: [embed] }).then((msg) => {
-        //Send the embed and wait for the message repy from the user
-        //Then use for train
-        const filter = m => m.author.id === message.author.id;
-        const collector = msg.channel.createMessageCollector(filter, { time: 60000 });
 
-        collector.on('collect', async msg => {
-            response = await msg.content;
-            msg.delete();
-            collector.stop();
-        });
-
-        collector.on('end', async () => {
-                embed.setTitle("Tank you!")
-                embed.setColor(0x00ff00)
-                embed.setDescription(`I have learned something new!`)
-                message.channel.send({ embeds: [embed] })
-                l.learn(sentence, tag, response);
-            });
-        });
-
-        
     }
 };
