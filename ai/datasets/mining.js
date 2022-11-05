@@ -95,13 +95,54 @@ function tagLister(){
 }
 
 
+//Validate the content of imput directory files
+// - Recive a sentence and a tag
+// - Read all the files in the imput directory
+// - insert all the lines in an object array [{file: 'file name', line: 'line content'}]
+// - Loop through the array and verify if the sentence existis in the line
+// - if not return {status: false}
+// - if yes return {sucess: true, file: 'file name', line: 'line content'}
+function validateContent(sentence, tag) {
+    let files = fs.readdirSync(path.join(__dirname, '../datasets/imput'));
+    let content = [];
+    //Remove the .txt from the file name
+    //Remove the \r from the end of the line
+    files.forEach(file => {
+        let lines = fs.readFileSync(path.join(__dirname, '../datasets/imput/' + file), 'utf8').split('\n');
+        lines.forEach(line => {
+            content.push({
+                file: file.split('.')[0],
+                line: line.replace('\r', '')
+            });
+        });
+    });
+    let result = null;
+    for (let i = 0; i < content.length; i++) {
+        if (content[i].line === sentence) {
+            result = {
+                status: true,
+                file: content[i].file,
+                line: content[i].line
+            };
+            break;
+        }
+    }
+    if (result === null) {
+        result = {
+            status: false
+        };
+    }
+    return result;        
+}
+
+
 //Inset new traing data to the train.json array 
 // - Recive a tag and a sentence
 // - Create a new object with the tag and sentence
 // - Append the new object to the train.json array
 // - Save the new array to the json file
-// - Verify if the tag given existis in imput directory 
-// - if not create a new file with the tag name and append the sentence to the end of the file
+// - Verify if the tag given existis in imput directory and validate with the validateContent function
+// - If not create a new file with the tag name and the sentence
 // - if yes append the sentence to the end of the file
 function insertTrainingData(tag, sentence){
     let train = JSON.parse(fs.readFileSync(path.join(__dirname, '../datasets/train.json'), 'utf8'));
@@ -112,16 +153,15 @@ function insertTrainingData(tag, sentence){
     fs.writeFileSync(path.join(__dirname, '../datasets/train.json'), JSON.stringify(train));
     let files = fs.readdirSync(path.join(__dirname, '../datasets/imput'));
     let file = files.find(item => item.split('.')[0] === tag);
-    if(file === undefined){
-        fs.appendFileSync(path.join(__dirname, '../datasets/imput/' + tag + '.txt'), sentence + '\n');
+    //Validate if the file existis and Validate if the sentence existis in the file
+    let result = validateContent(sentence, tag);
+    if (result.status === true){
+        fs.appendFileSync(path.join(__dirname, '../datasets/imput/' + result.file + '.txt'), '\n' + sentence);
     }
     else{
-        fs.appendFileSync(path.join(__dirname, '../datasets/imput/' + tag + '.txt'), sentence + '\n');
+        fs.writeFileSync(path.join(__dirname, '../datasets/imput/' + tag + '.txt'), sentence);
     }
 }
-
-
-insertTrainingData
 
 
 //Find tag in the tags.json file
@@ -143,7 +183,6 @@ function findTagByCode(code) {
     let tagObject = tags.find(item => item.code === code);
     return tagObject.code;
 }
-
 
 
 

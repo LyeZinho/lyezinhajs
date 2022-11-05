@@ -3,7 +3,8 @@ const exec = require('child_process').exec;
 
 
 
-function learn(tag, sentence, response) {
+
+async function learn(tag, sentence, response) {
     mine.insertTrainingData(tag, sentence);
     mine.addResponse(tag, response);
     mine.tagLister()

@@ -97,15 +97,44 @@ function loadTrain(dictionary){
     return trainingSet;
 }
 
+function getIterations(){
+    let iterations = JSON.parse(fs.readFileSync(path.join(__dirname, './datasets/iterations.json'), 'utf8'));
+    return iterations;
+}
+
+
+// ------------------------- TEST -------------------------
 // //Load the dataset
-// let dataset = mine.loadDataset();
+let dataset = mine.loadDataset();
 
 // //Create a dictionary of all words in the dataset
-// let dictionary = createDictionary(dataset);
+let dictionary = createDictionary(dataset);
 
 // //Create a training set
-// let trainingSet = loadTrain(dictionary);
+let trainingSet = loadTrain(dictionary);
 
+// console.log("________________________________________________")
+// console.log("---------------[Tokenize]----------------------")
+// console.log(tokenize("Hello, how are you?"));
+// console.log("________________________________________________")
+// console.log("---------------[Stemmer]-----------------------")
+// console.log(stemmer("Apple"));
+// console.log("________________________________________________")
+// console.log("---------------[Create Dictionary]-------------")
+// console.log(createDictionary(dataset));
+// console.log("________________________________________________")
+// console.log("---------------[Create BoW]--------------------")
+// console.log(creatBoW("Hello, how are you?", dictionary));
+// console.log("________________________________________________")
+// console.log("---------------[Load Train]--------------------")
+// console.log(loadTrain(dictionary));
+// console.log("________________________________________________")
+// console.log("---------------[Train Factory]-----------------")
+// console.log(trainFactory(creatBoW("Hello, how are you?", dictionary), "greeting"));
+// console.log("________________________________________________")
+// console.log("---------------[Output Filter]-----------------")
+// console.log(outputFilter({greeting: 0.9, goodbye: 0.1}));
+// console.log("________________________________________________")
 
 
 module.exports = {  
@@ -115,7 +144,8 @@ module.exports = {
     creatBoW,
     loadTrain,
     trainFactory,
-    outputFilter
+    outputFilter,
+    getIterations
 }
 
 

@@ -6,19 +6,6 @@ const natural = require('natural')
 const brain = require('brain.js')
 
 
-//Load the dataset
-let dataset = mine.loadDataset();
-
-//Create the dictionary
-let dictionary = utils.createDictionary(dataset);
-
-//Load the train
-let train = utils.loadTrain(dictionary);
-
-//Create the neural network
-let net = new brain.NeuralNetwork({
-    hiddenLayers: [3]
-});
 
 //Train the neural network
 // net.train(train, {
@@ -29,18 +16,40 @@ let net = new brain.NeuralNetwork({
 //         learningRate: 0.3
 // });
 
-// Load the model using fs
-net.fromJSON(JSON.parse(fs.readFileSync(path.join(__dirname, './datasets/model.json'), 'utf8')));
 
 
 async function chat(input){
+    
+    //Load the dataset
+    let dataset = mine.loadDataset();
+
+    //Create the dictionary
+    let dictionary = utils.createDictionary(dataset);
+
+    //Load the train
+    let train = utils.loadTrain(dictionary);
+
+    //Create the neural network
+    let net = new brain.NeuralNetwork({
+        hiddenLayers: [3]
+    });
+
+    // Load the model using fs
+    net.fromJSON(JSON.parse(fs.readFileSync(path.join(__dirname, './datasets/model.json'), 'utf8')));
+
+    //Create the bag of words
     let word = utils.creatBoW(input, dictionary);
+    
+    //Run the neural network
     let output = net.run(word);
-    let response = mine.getResponse(utils.outputFilter(output));
-    return response;
+
+    //Return the response
+    return Promise.resolve(mine.getResponse(utils.outputFilter(output)));
 }
 
-console.log(chat("How are you?"))
+// chat("test").then((response) => {
+//     console.log(response);
+// })
 
 
 //Save the model using fs

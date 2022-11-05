@@ -15,6 +15,7 @@ const client = new Client({
 });
 const imputbuilder = require("./tools/imputbuilder.js");
 const cmdloader = require("./tools/commandloader.js");
+const axios = require("axios");
 
 let commands = cmdloader.commandloader();
 
@@ -31,6 +32,13 @@ client.on("ready", () => {
   }
   console.log(" ------------------");
 });
+
+
+
+
+
+
+
 
 client.on("messageCreate", (message) => {
   if (message.author.bot) return;

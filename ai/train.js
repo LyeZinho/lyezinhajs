@@ -21,16 +21,33 @@ let net = new brain.NeuralNetwork({
     hiddenLayers: [3]
 });
 
+// Count the time to train the neural network  in milliseconds
+let start = new Date().getTime();
+
+let info = null;
 net.train(train, {
         errorThresh: 0.005,
         iterations: 20000,
         log: true,
         logPeriod: 10,
-        learningRate: 0.3
+        learningRate: 0.3,
+        callback: (stats) => {
+            console.log(stats);
+            info = stats;
+        }
 });
 
+let end = new Date().getTime();
+let time = end - start;
 
-let imput = "How are you?"
+// Time miliseconds to seconds
+info.time = time / 1000;
+
+// Save iterations and error
+fs.writeFileSync(path.join(__dirname, './datasets/iterations.json'), JSON.stringify(info));
+
+
+let imput = "test"
 let word = utils.creatBoW(imput, dictionary);
 
 let output = net.run(word);
