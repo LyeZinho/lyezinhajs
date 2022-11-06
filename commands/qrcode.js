@@ -3,8 +3,6 @@ function createQrCode(data, size = "150x150") {
     return url
 }
 
-
-
 module.exports = {
     name: 'qrcode',
     description: 'Creiate a QR Code.',

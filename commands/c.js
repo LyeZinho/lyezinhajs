@@ -17,13 +17,23 @@ module.exports = {
         //ai path: ../ai/main.js
         //ai function: chat(imput)
         const ai = require('../ai/main');
+        const { EmbedBuilder } = require("discord.js");
+        const embed = new EmbedBuilder();
 
         //Get the imput
         let rawText = makeImput(args)
 
         //Return promise and resolve
-        ai.chat(rawText).then((res) => {
-            message.channel.send(res);
-        })
+        try{
+            ai.chat(rawText).then((res) => {
+                message.channel.send(res);
+            })
+        }
+        catch(err){
+            embed.setTitle("Error");
+            embed.setDescription("Something went wrong!");
+            embed.setColor("#FF0000");
+            message.channel.send({ embeds: [embed] });
+        }
     }
 };
